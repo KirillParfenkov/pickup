@@ -1,4 +1,4 @@
-@globalStyle: #eee;
+@bodyBackground: url(/images/body_background.png);
 
 .clearfix:after{
 	content: '.';
@@ -8,13 +8,24 @@
 	visibility: hidden;
 	clear: both;
 }
-
+/**
+* Styles for login form
+*/
 body{
-	background-color: @globalStyle;
-}
+	background: @bodyBackground repeat;
+	background-size: contain;
 
+	@media screen and (max-width: 800px){
+	section{
+		margin: 0 5%;
+	}
+	}
+}
+/**
+* Styles for registration form
+*/
 body{
 	.regForm{
-		
+
 	}
 }

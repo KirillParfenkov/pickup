@@ -5,14 +5,22 @@ var express = require('express'),
 	async = require('async'),
 	bodyParser = require('body-parser'),
 	path = require('path');
-	UserDao = require('./modules/user-dao');
+	UserDao = require('./modules/user-dao'),
+	RoutDao = require('./modules/rout-dao');
 
 // custom
 var userDao = UserDao();
 userDao.connect(function( err ) {
 	if (err) throw err;
-	console.log( 'mongoDB started!' );
+	console.log( 'user dao started!' );
 });
+
+var routDao = RoutDao();
+routDao.connect(function( err ) {
+	if (err) throw err;
+	console.log( 'rout dao started!' );
+});
+
 
 var app = express();
 
@@ -32,5 +40,24 @@ app.listen(nconf.get('port'), function() {
 app.get('/api/users', function( req, res ) {
 	userDao.getList( function( err, users ) {
 		res.json( 200, 	users );
+	});
+});
+
+app.get('/api/user/:id', function( req, res ) {
+	userDao.getById( req.params.id, function( err, user ) {
+		if (err) console.log( err );
+		res.json( 200, 	user );
+	});
+});
+
+app.get('/api/routs', function(req, res) {
+	routDao.getList( function( err, routs) {
+		res.json( 200, routs );
+	});
+});
+
+app.get('/api/rout/:id', function(req, res) {
+	routDao.getById( req.params.id, function( err, rout ) {
+		res.json( 200, rout );
 	});
 });

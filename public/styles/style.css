@@ -1,0 +1,20 @@
+.row > div, .loader{
+	height: 100px;
+}
+
+.col1{
+	background-color: #5C7080;
+}
+
+.col2{
+	background-color: #6BC0FF;
+}
+
+.col3{
+	background-color: #E8AA4C;
+}
+
+.over{
+	text-decoration: underline;
+	cursor:pointer;
+}

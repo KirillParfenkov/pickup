@@ -23,7 +23,6 @@ routDao.connect(function( err ) {
 	console.log( 'rout dao started!' );
 });
 
-
 var app = express();
 
 nconf.argv().env().file({file: './config.json'});

@@ -106,6 +106,10 @@ app.use(passport.session());
 app.post('/login', passport.authenticate( 'local', { successRedirect: '/', failureRedirect: '/login.html' }));
 
 
+app.post('/api/user', function( req, res ) {
+	res.redirect( 302, '/');
+});
+
 app.get('/api', function(req, res) {
 	res.send(200, 'Api is runnig!');
 });

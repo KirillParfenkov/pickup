@@ -5,7 +5,7 @@ nconf.argv().env().file({file: './config.json'});
 
 module.exports = function() {
 
-	var USER_TABLE = "users";
+	var ROUT_TABLE = "routs";
 
 	return {
 
@@ -29,12 +29,11 @@ module.exports = function() {
 			});
 		},
 
-		getById : function( id, finish ) {
+		getById : function( routId, finish ) {
 			var dao = this;
-			var collection = this.db.collection( USER_TABLE );
-			console.log( 'id: ' + id);
-			collection.findOne({_id: new ObjectID( id )}, { "name" : 1, "phone" : 1, "desc": 1 }, function( err, user ) {
-				finish( err, user );
+			var collection = this.db.collection( ROUT_TABLE );
+			collection.findOne({_id: new ObjectID( routId )}, {userId : true, points : true, time: true, info: true}, function( err, rout ) {
+				finish( err, rout );
 			});
 		},
 
@@ -51,7 +50,7 @@ module.exports = function() {
 		},
 
 		getList : function( finish ) {
-			var collection = this.db.collection('users');
+			var collection = this.db.collection( ROUT_TABLE );
 			collection.find().toArray(function(err, results) {
 				finish( err, results );	
 			});

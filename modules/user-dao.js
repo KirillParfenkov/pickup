@@ -57,6 +57,33 @@ module.exports = function() {
 			});
 		},
 
+		authorize : function( phone, password, done ) {
+			var dao = this;
+			var collection = this.db.collection( USER_TABLE );
+
+			collection.findOne({ phone: phone }, function( err, user ) {
+				if ( err ) {
+					done( err );
+				} else {
+					var user = rows[0];
+					var userPassword;
+					if ( !user ) {
+						return done( null, false );
+					} else {
+
+						userPassword = user.password;
+						delete user.password;
+
+						if ( password == userPassword ) {
+							return done( null, user );
+						}
+
+						return done( null, false );
+					}
+				}
+			});
+		},
+
 		close : function() {
 			dao.db.close();
 		}

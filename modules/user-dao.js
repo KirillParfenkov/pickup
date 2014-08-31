@@ -32,14 +32,27 @@ module.exports = function() {
 		getById : function( id, finish ) {
 			var dao = this;
 			var collection = this.db.collection( USER_TABLE );
-			console.log( 'id: ' + id);
 			collection.findOne({_id: new ObjectID( id )}, { "name" : 1, "phone" : 1, "desc": 1 }, function( err, user ) {
 				finish( err, user );
 			});
 		},
 
 		insert : function( user, finish ) {
-			finish( user );
+			var dao = this;
+			var collection = this.db.collection( USER_TABLE );
+			collection.findOne({ phone : user.phone }, { "name" : 1, "phone" : 1, "desc": 1 }, function( err, existUser ) {
+
+				if ( err ) finish( err );
+
+				if ( existUser ) {
+					finish( { type: "userExist"} );
+				}
+
+				collection.insert( user, function( err, user ) {
+					if ( err ) finish( err );
+					finish( null, user );
+				});
+			});
 		},
 
 		update : function( user, finish ) {

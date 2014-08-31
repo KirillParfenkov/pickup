@@ -107,7 +107,45 @@ app.post('/login', passport.authenticate( 'local', { successRedirect: '/', failu
 
 
 app.post('/api/user', function( req, res ) {
-	res.redirect( 302, '/');
+
+	if ( req.body.password != req.body.repairPassword ) {
+		res.json( 200, { err : {
+			type : "passwordNotEqual"
+		}});
+		return;
+	} else if ( !req.body.password ) {
+		res.json( 200, {
+			err : {
+				type : "passwordIsEmpty"
+			}
+		});
+		return;
+	} else if ( !req.body.name ) {
+		res.json( 200, {
+			err : {
+				type : "nameIsEmpty"
+			}
+		});
+		return;
+	} else if ( !req.body.phone ) {
+		res.json( 200, {
+			err : {
+				type : "phoneIsEmpty"
+			}
+		});
+		return;
+	}
+
+	var user = {
+		phone : req.body.phone,
+		name : req.body.name,
+		passport : req.body.password,
+		info : req.body.info
+	}
+	userDao.insert( user, function( err, createdUser) {
+		if ( err )  res.json( err );
+		res.json( 200, createdUser );
+	});
 });
 
 app.get('/api', function(req, res) {
